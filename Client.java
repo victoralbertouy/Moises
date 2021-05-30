@@ -1,7 +1,5 @@
 package moises;
 
-package moises;
-
 import java.util.Vector;
 
 public class Client {
@@ -41,21 +39,22 @@ public class Client {
         return lloguers.contains(lloguer);
     }
     public String informe() {
-        String resultat = "Informe de lloguers del client " +
+        String resultat = "<h1>Informe de lloguers</h1>\n<p>Informe de lloguers del client <em>" +
             getNom() +
-            " (" + getNif() + ")\n";
+            " </em> (<strong>" + getNif() + "</strong>)</p>\n<tr><td><strong>Marca</strong></td><td><strong>Model</strong></td><td><strong>Import</strong></td></tr>\n";
+        
         for (Lloguer lloguer: lloguers) {
             // composa els resultats d'aquest lloguer
-            resultat += "\t" +
+            resultat += "\t<tr><td>" +
                 lloguer.getVehicle().getMarca() +
-                " " +
-                lloguer.getVehicle().getModel() + ": " +
-                (lloguer.quantitat() * EUROS_PER_UNITAT_DE_COST) + "€" + "\n";
+                "</td><td>" +
+                lloguer.getVehicle().getModel() + "</td><td>" +
+                (lloguer.quantitat() * EUROS_PER_UNITAT_DE_COST) + "€</td></tr>" + "\n";
         }
 
         // afegeix informació final
-        resultat += "Import a pagar: " + importTotal() + "€\n" +
-            "Punts guanyats: " + bonificacionsTotals() + "\n";
+        resultat += "<p>Import a pagar: <em>" + importTotal() + "€</em></p>\n" +
+            "<p>Punts guanyats: <em>" + bonificacionsTotals() + "</em></p>\n";
         return resultat;
     }
     public double importTotal() {
