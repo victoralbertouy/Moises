@@ -1,5 +1,7 @@
 package moises;
 
+package moises;
+
 import java.util.Vector;
 
 public class Client {
@@ -7,6 +9,7 @@ public class Client {
     private String nom;
     private String telefon;
     private Vector<Lloguer> lloguers;
+    private static final double EUROS_PER_UNITAT_DE_COST = 30;
  
     public Client(String nif, String nom, String telefon) {
         this.nif = nif;
@@ -38,33 +41,35 @@ public class Client {
         return lloguers.contains(lloguer);
     }
     public String informe() {
-        double total = 0;
-        int bonificacions = 0;
         String resultat = "Informe de lloguers del client " +
             getNom() +
             " (" + getNif() + ")\n";
         for (Lloguer lloguer: lloguers) {
-            // afegeix lloguers freqüents
-            bonificacions ++;
-
-            // afegeix bonificació per dos dies de lloguer de Luxe
-            if (lloguer.getVehicle().getCategoria() == Vehicle.LUXE &&
-                    lloguer.getDies()>1 ) {
-                bonificacions ++;
-            }
-
             // composa els resultats d'aquest lloguer
             resultat += "\t" +
                 lloguer.getVehicle().getMarca() +
                 " " +
                 lloguer.getVehicle().getModel() + ": " +
-                (lloguer.quantitat() * 30) + "€" + "\n";
-            total += lloguer.quantitat() * 30;
+                (lloguer.quantitat() * EUROS_PER_UNITAT_DE_COST) + "€" + "\n";
         }
 
         // afegeix informació final
-        resultat += "Import a pagar: " + total + "€\n" +
-            "Punts guanyats: " + bonificacions + "\n";
+        resultat += "Import a pagar: " + importTotal() + "€\n" +
+            "Punts guanyats: " + bonificacionsTotals() + "\n";
         return resultat;
     }
-}
+    public double importTotal() {
+    	double total = 0;
+    	for (Lloguer lloguer: lloguers) {
+    		total += lloguer.quantitat() * EUROS_PER_UNITAT_DE_COST;
+        }
+    	return total;
+    }
+    public double bonificacionsTotals() {
+        int bonificacions = 0;
+    	for (Lloguer lloguer: lloguers) {
+    		bonificacions += lloguer.bonificacions();
+        }
+    	return bonificacions;
+    }
+} 
